@@ -252,7 +252,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { sum, mul } = nativeBinding
+const { Claims, JwtClient } = nativeBinding
 
-module.exports.sum = sum
-module.exports.mul = mul
+module.exports.Claims = Claims
+module.exports.JwtClient = JwtClient
