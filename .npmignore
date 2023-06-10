@@ -11,3 +11,10 @@ yarn.lock
 .yarn
 __test__
 renovate.json
+bench
+examples
+bacon.toml
+esbuild-runner.config.js
+rome.json
+rustfmt.toml
+tsconfig.json
