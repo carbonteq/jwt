@@ -79,10 +79,5 @@
     "version": "changeset version && napi version",
     "release": "changeset publish"
   },
-  "packageManager": "yarn@3.6.0",
-  "optionalDependencies": {
-    "@carbonteq/jwt-win32-x64-msvc": "0.1.1",
-    "@carbonteq/jwt-linux-x64-gnu": "0.1.1",
-    "@carbonteq/jwt-darwin-universal": "0.1.1"
-  }
+  "packageManager": "yarn@3.6.0"
 }
