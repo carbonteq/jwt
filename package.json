@@ -1,0 +1,49 @@
+{
+  "name": "@carbonteq/jwt",
+  "description": "JWT lib with native bindings and (optional) LRU cache",
+  "version": "0.1.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "napi": {
+    "name": "jwt",
+    "triples": {
+      "defaults": false,
+      "additional": [
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "universal-apple-darwin"
+      ]
+    }
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@changesets/cli": "^2.26.1",
+    "@napi-rs/cli": "^2.16.1",
+    "@types/benchmark": "^2.1.2",
+    "@types/node": "^20.2.6",
+    "ava": "^5.1.1",
+    "benchmark": "^2.1.4",
+    "esbuild-runner": "^2.2.2",
+    "fast-jwt": "^3.1.1",
+    "jose": "^4.14.4",
+    "jsonwebtoken": "^9.0.0",
+    "rome": "^12.1.3"
+  },
+  "ava": {
+    "timeout": "3m"
+  },
+  "engines": {
+    "node": ">= 16"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "ava",
+    "universal": "napi universal",
+    "version": "changeset version && napi version",
+    "release": "changeset publish"
+  },
+  "packageManager": "yarn@3.6.0"
+}
