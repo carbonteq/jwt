@@ -7,12 +7,16 @@
   "cpu": [
     "x64"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "jwt.win32-x64-msvc.node",
   "files": [
     "jwt.win32-x64-msvc.node"
   ],
   "license": "MIT",
   "engines": {
-    "node": ">= 10"
+    "node": ">= 16"
   }
 }

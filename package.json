@@ -4,6 +4,27 @@
   "version": "0.1.1",
   "main": "index.js",
   "types": "index.d.ts",
+  "scope": "@carbonteq",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carbonteq/jwt"
+  },
+  "bugs": {
+    "url": "https://github.com/carbonteq/hexapp/issues"
+  },
+  "homepage": "https://github.com/carbonteq/jwt#readme",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "exports": {
+    "node": {
+      "require": "./index.js",
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "napi": {
     "name": "jwt",
     "triples": {
@@ -23,6 +44,8 @@
     "@types/node": "^20.2.6",
     "ava": "^5.1.1",
     "benchmark": "^2.1.4",
+    "esbuild": "^0.18.0",
+    "esbuild-runner": "^2.2.2",
     "fast-jwt": "^3.1.1",
     "jose": "^4.14.4",
     "jsonwebtoken": "^9.0.0",
@@ -57,8 +80,9 @@
     "release": "changeset publish"
   },
   "packageManager": "yarn@3.6.0",
-  "dependencies": {
-    "esbuild": "^0.18.0",
-    "esbuild-runner": "^2.2.2"
+  "optionalDependencies": {
+    "@carbonteq/jwt-win32-x64-msvc": "0.1.1",
+    "@carbonteq/jwt-linux-x64-gnu": "0.1.1",
+    "@carbonteq/jwt-darwin-universal": "0.1.1"
   }
 }
