@@ -3,26 +3,28 @@
 #[macro_use]
 extern crate napi_derive;
 
-use jsonwebtoken::{Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation};
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation};
 use napi::bindgen_prelude::Buffer;
 use serde::{Deserialize, Serialize};
 
 #[napi]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-  payload: Vec<u8>,
+  data: String,
   exp: u64,
 }
 
 #[napi]
 impl Claims {
   #[napi(constructor)]
-  pub fn new(payload: String, expires_in_ms: u32) -> Self {
+  pub fn new(data: String, expires_in_ms: u32) -> Self {
     let exp = jsonwebtoken::get_current_timestamp() + u64::from(expires_in_ms);
-    Self {
-      payload: payload.as_bytes().to_vec(),
-      exp,
-    }
+    Self { data, exp }
+  }
+
+  #[napi(getter)]
+  pub fn data(&self) -> String {
+    self.data.clone()
   }
 }
 
