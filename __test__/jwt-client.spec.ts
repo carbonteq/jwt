@@ -3,20 +3,21 @@ import test from 'ava';
 import * as jose from 'jose';
 
 const secret = 'testsecretkeycanbeexposed';
+const normalExpiresIn = 10000;
 const secretEnc = new TextEncoder().encode(secret);
 const client = new JwtClient(secret);
 
 const testPayload = { user: 'test@carbonteq.dev' };
 
 test('should create a valid token from payload', async (t) => {
-  const token = client.sign(testPayload, 10000);
+  const token = client.sign(testPayload, normalExpiresIn);
   const joseVerifyRes = await jose.jwtVerify(token, secretEnc);
 
   t.deepEqual(joseVerifyRes.payload?.data, testPayload);
 });
 
 test('should create a valid token from claims', async (t) => {
-  const claims = new Claims(testPayload, 10000);
+  const claims = new Claims(testPayload, normalExpiresIn);
   const token = client.signClaims(claims);
   const joseVerifyRes = await jose.jwtVerify(token, secretEnc);
 
@@ -24,45 +25,45 @@ test('should create a valid token from claims', async (t) => {
 });
 
 test('created token should be valid', (t) => {
-  const token = client.sign(testPayload, 10000);
+  const token = client.sign(testPayload, normalExpiresIn);
 
-  t.true(client.verify(token));
+  t.deepEqual(client.verify(token).data, testPayload);
 });
 
 test('created (claims) token should be valid', (t) => {
-  const claims = new Claims(testPayload, 10000);
+  const claims = new Claims(testPayload, normalExpiresIn);
   const token = client.signClaims(claims);
 
-  t.true(client.verify(token));
+  t.deepEqual(client.verify(token).data, testPayload);
+});
+
+test('verifying after exp should return false', (t) => {
+  const claims = new Claims(testPayload, 2);
+  claims.exp = 10; // In the past
+  const token = client.signClaims(claims);
+
+  t.throws(() => client.verify(token));
 });
 
 test('decode output should give the correct payload data', (t) => {
-  const token = client.sign(testPayload, 10000);
-  const decoded = client.verifyAndDecode(token);
+  const token = client.sign(testPayload, normalExpiresIn);
+  const decoded = client.decode(token);
 
   t.deepEqual(decoded.data, testPayload);
 });
 
 test('decode output should give the correct payload data for claims', (t) => {
-  const claims = new Claims(testPayload, 10000);
+  const claims = new Claims(testPayload, normalExpiresIn);
   const token = client.signClaims(claims);
-  const decoded = client.verifyAndDecode(token);
+  const decoded = client.decode(token);
 
   t.deepEqual(decoded.data, testPayload);
 });
 
-test('verifying after exp should return false', async (t) => {
+test('decoding after exp should return payload', (t) => {
   const claims = new Claims(testPayload, 2);
   claims.exp = 10; // In the past
   const token = client.signClaims(claims);
 
-  t.false(client.verify(token));
-});
-
-test('decoding after exp should throw error', async (t) => {
-  const claims = new Claims(testPayload, 2);
-  claims.exp = 10; // In the past
-  const token = client.signClaims(claims);
-
-  t.throws(() => client.verifyAndDecode(token));
+  t.deepEqual(client.decode(token).data, testPayload);
 });

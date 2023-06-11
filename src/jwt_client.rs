@@ -22,6 +22,7 @@ impl JwtClient {
     let encoding_key = EncodingKey::from_secret(key);
     let decoding_key = DecodingKey::from_secret(key);
     let mut no_valid = Validation::new(jsonwebtoken::Algorithm::HS256);
+    no_valid.validate_exp = false;
     no_valid.required_spec_claims = HashSet::new();
     no_valid.insecure_disable_signature_validation();
 
