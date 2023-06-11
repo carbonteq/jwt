@@ -52,7 +52,7 @@ suite
     defer: true,
     minSamples,
     fn: function (deferred) {
-      client.sign(JSON.stringify(payload), 1000);
+      client.sign(payload, 1000);
       deferred.resolve();
     },
   })
@@ -60,7 +60,7 @@ suite
     defer: true,
     minSamples,
     fn: function (deferred) {
-      const claims = new Claims(JSON.stringify(payload), 1000);
+      const claims = new Claims(payload, 1000);
       client.signClaims(claims);
       deferred.resolve();
     },
