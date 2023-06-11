@@ -1,14 +1,10 @@
 #![deny(clippy::all)]
 
-#[macro_use]
-extern crate napi_derive;
+// DISCLAIMER: Majority of the code and/or inspiration comes from @node-rs/jsonwebtoken. I have
+// just updated and modified the code to meet my own use cases and API design
 
-#[napi]
-pub fn sum(a: i32, b: i32) -> i32 {
-  a + b
-}
+mod claims;
+mod jwt_client;
 
-#[napi]
-pub fn mul(a: i32, b: i32) -> i64 {
-  i64::from(a) * i64::from(b)
-}
+pub use claims::{ClaimOpts, Claims};
+pub use jwt_client::JwtClient;
