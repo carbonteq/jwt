@@ -5,12 +5,25 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scope": "@carbonteq",
+  "author": {
+    "name": "Muhammad Arslan",
+    "url": "https://github.com/volf52",
+    "email": "arsalan.karamat@carbonteq.com"
+  },
+  "keywords": [
+    "jwt",
+    "jsonwebtoken",
+    "napi",
+    "napi-rs",
+    "carbonteq",
+    "N-API"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/carbonteq/jwt"
   },
   "bugs": {
-    "url": "https://github.com/carbonteq/hexapp/issues"
+    "url": "https://github.com/carbonteq/jwt/issues"
   },
   "homepage": "https://github.com/carbonteq/jwt#readme",
   "sideEffects": false,
