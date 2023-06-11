@@ -27,6 +27,6 @@ export class JwtClient {
   static fromBufferKey(secretKey: Buffer): JwtClient
   sign(data: Record<string, any>, expiresInSeconds: number, claimOpts?: ClaimOpts | undefined | null): string
   signClaims(claims: Claims): string
-  verify(token: string): boolean
-  verifyAndDecode(token: string): Claims
+  verify(token: string): Claims
+  decode(token: string): Claims
 }

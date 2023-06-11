@@ -48,9 +48,11 @@ __metadata:
     "@changesets/cli": ^2.26.1
     "@napi-rs/cli": ^2.16.1
     "@types/benchmark": ^2.1.2
+    "@types/jsonwebtoken": ^9.0.2
     "@types/node": ^20.2.6
     ava: ^5.1.1
     benchmark: ^2.1.4
+    chalk: ^5.2.0
     esbuild: ^0.18.0
     esbuild-runner: ^2.2.2
     fast-jwt: ^3.1.1
@@ -667,10 +669,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "@types/jsonwebtoken@npm:9.0.2"
+  dependencies:
+    "@types/node": "*"
+  checksum: 3bb8d40e78d7eb53e427db6e9f0f22e0890cfee80965dcf741d08341814913afb211306de6e9847c6d241cc8e36f8a59090cbfdcc510ab7c81af9d650c5afe0e
+  languageName: node
+  linkType: hard
+
 "@types/minimist@npm:^1.2.0":
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
   checksum: b8da83c66eb4aac0440e64674b19564d9d86c80ae273144db9681e5eeff66f238ade9515f5006ffbfa955ceff8b89ad2bd8ec577d7caee74ba101431fb07045d
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:*":
+  version: 20.3.0
+  resolution: "@types/node@npm:20.3.0"
+  checksum: 613e878174febc0104dae210088645cbb5096a19ae5fdf57fbc06fa6ef71755b839858c2b313fb8c1df8b7c6660e1b5f7a64db2126af9d47d1d9238e2bc0a86d
   languageName: node
   linkType: hard
 

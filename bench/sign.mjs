@@ -1,10 +1,11 @@
+import { Claims, JwtClient } from '../index.js';
 import bench from 'benchmark';
-import jwt from 'jsonwebtoken';
+import chalk from 'chalk';
 import fastJwt from 'fast-jwt';
 import * as jose from 'jose';
-import { Claims, JwtClient } from '../index.js';
+import jwt from 'jsonwebtoken';
 
-const suite = new bench.Suite();
+const suite = new bench.Suite('Sign token');
 
 const secret = 'somelongsecretasdbnakwfbjawf';
 const minSamples = 100;
@@ -22,53 +23,54 @@ const joseSign = async (payload) => {
 };
 
 suite
-  .add('jsonwebtoken#sign', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+  .add(
+    'jsonwebtoken',
+    () => {
       jwt.sign(payload, secret);
-      deferred.resolve();
     },
-  })
-  .add('jose#sign', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      joseSign(payload).then(() => deferred.resolve());
+    { minSamples },
+  )
+  .add(
+    'jose',
+    async (deferred) => {
+      await joseSign(payload);
+      deferred.resolve();
       // const s = new jose.SignJWT(payload);
       // s.setProtectedHeader({ alg: "HS256" }).sign(encodedKey).then(defer);
     },
-  })
-  .add('fastjwt#sign', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+    { defer: true, minSamples },
+  )
+  .add(
+    'fast-jwt',
+    () => {
       const signer = fastJwt.createSigner({ key: secret });
       signer(payload);
-      deferred.resolve();
     },
-  })
-  .add('@carbonteq/jwt#sign', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+    { minSamples },
+  )
+  .add(
+    '@carbonteq/jwt',
+    () => {
       client.sign(payload, 1000);
-      deferred.resolve();
     },
-  })
-  .add('@carbonteq/jwt#signClaims', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+    { minSamples },
+  )
+  .add(
+    '@carbonteq/jwt#signClaims',
+    () => {
       const claims = new Claims(payload, 1000);
       client.signClaims(claims);
-      deferred.resolve();
     },
-  })
+    { minSamples },
+  )
   .on('cycle', (e) => {
     console.log(String(e.target));
   })
   .on('complete', function () {
-    console.log('\nFastest is ' + this.filter('fastest').map('name'));
+    console.log(
+      `\nSUITE <${this.name}>: Fastest is ${chalk.green(
+        this.filter('fastest').map('name'),
+      )}`,
+    );
   })
-  .run({ async: true });
+  .run();

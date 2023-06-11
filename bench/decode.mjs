@@ -1,10 +1,11 @@
+import { Claims, JwtClient } from '../index.js';
 import bench from 'benchmark';
-import jwt from 'jsonwebtoken';
+import chalk from 'chalk';
 import fastJwt from 'fast-jwt';
 import * as jose from 'jose';
-import { Claims, JwtClient } from '../index.js';
+import jwt from 'jsonwebtoken';
 
-const suite = new bench.Suite();
+const suite = new bench.Suite('Decode (No Verification)');
 
 const secret = 'somelongsecretasdbnakwfbjawf';
 const minSamples = 100;
@@ -21,53 +22,53 @@ const joseSign = async (payload) => {
   // return await jose.JWT.sign(payload, key);
 };
 
-const joseSigned = await joseSign(payload);
+const joseToken = await joseSign(payload);
 const jwtSigned = jwt.sign(payload, secret);
 
 const signer = fastJwt.createSigner({ key: secret });
 const fastJwtDecode = fastJwt.createDecoder();
-const fastJwtSigned = signer(payload);
+const fastJwtToken = signer(payload);
 
 const claims = new Claims(JSON.stringify(payload), 60000);
-const fasterJwtSigned = client.signClaims(claims);
+const ctJwtToken = client.signClaims(claims);
 
 suite
-  .add('jsonwebtoken#decode', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+  .add(
+    'jsonwebtoken',
+    () => {
       jwt.decode(jwtSigned);
-      deferred.resolve();
     },
-  })
-  .add('jose#decode', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      jose.decodeJwt(joseSigned);
-      deferred.resolve();
+    { minSamples },
+  )
+  .add(
+    'jose',
+    () => {
+      jose.decodeJwt(joseToken);
     },
-  })
-  .add('fastjwt#decode', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      fastJwtDecode(fastJwtSigned);
-      deferred.resolve();
+    { minSamples },
+  )
+  .add(
+    'fast-jwt',
+    () => {
+      fastJwtDecode(fastJwtToken);
     },
-  })
-  .add('@carbonteq/jwt#decode', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      client.decode(fasterJwtSigned);
-      deferred.resolve();
+    { minSamples },
+  )
+  .add(
+    '@carbonteq/jwt',
+    () => {
+      client.decode(ctJwtToken);
     },
-  })
+    { minSamples },
+  )
   .on('cycle', (e) => {
     console.log(String(e.target));
   })
   .on('complete', function () {
-    console.log('\nFastest is ' + this.filter('fastest').map('name'));
+    console.log(
+      `\nSUITE <${this.name}>: Fastest is ${chalk.green(
+        this.filter('fastest').map('name'),
+      )}`,
+    );
   })
-  .run({ async: true });
+  .run();
