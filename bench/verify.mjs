@@ -1,4 +1,4 @@
-import { Claims, JwtClient } from '../index.js';
+import { JwtClient } from '../index.js';
 import bench from 'benchmark';
 import chalk from 'chalk';
 import fastJwt from 'fast-jwt';
@@ -29,8 +29,7 @@ const jwtSigned = jwt.sign(payload, secret);
 const signer = fastJwt.createSigner({ key: secret });
 const fastJwtSigned = signer(payload);
 
-const claims = new Claims(JSON.stringify(payload), expires_in);
-const fasterJwtSigned = client.signClaims(claims);
+const ctJwtSigned = client.sign(payload, expires_in);
 
 suite
   .add(
@@ -59,7 +58,7 @@ suite
   .add(
     '@carbonteq/jwt',
     () => {
-      client.verify(fasterJwtSigned);
+      client.verify(ctJwtSigned);
     },
     { minSamples },
   )

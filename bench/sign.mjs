@@ -1,4 +1,4 @@
-import { Claims, JwtClient } from '../index.js';
+import { JwtClient } from '../index.js';
 import bench from 'benchmark';
 import chalk from 'chalk';
 import fastJwt from 'fast-jwt';
@@ -52,14 +52,6 @@ suite
     '@carbonteq/jwt',
     () => {
       client.sign(payload, 1000);
-    },
-    { minSamples },
-  )
-  .add(
-    '@carbonteq/jwt#signClaims',
-    () => {
-      const claims = new Claims(payload, 1000);
-      client.signClaims(claims);
     },
     { minSamples },
   )
