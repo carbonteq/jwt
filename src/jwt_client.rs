@@ -11,7 +11,6 @@ pub struct JwtClient {
   decoding_key: DecodingKey,
   header: Header,
   validation: Validation,
-  // no_valid: Validation,
 }
 
 #[napi]
@@ -20,17 +19,12 @@ impl JwtClient {
   fn from_key(key: &[u8]) -> Self {
     let encoding_key = EncodingKey::from_secret(key);
     let decoding_key = DecodingKey::from_secret(key);
-    // let mut no_valid = Validation::new(jsonwebtoken::Algorithm::HS256);
-    // no_valid.validate_exp = false;
-    // no_valid.required_spec_claims = HashSet::new();
-    // no_valid.insecure_disable_signature_validation();
 
     Self {
       encoding_key,
       decoding_key,
       header: Header::default(),
       validation: Validation::default(),
-      // no_valid,
     }
   }
 
@@ -52,13 +46,7 @@ impl JwtClient {
     let claims = Claims::new(data, expires_in_seconds, claim_opts);
 
     jsonwebtoken::encode(&self.header, &claims, &self.encoding_key).unwrap()
-    // self.sign_claims(&claims)
   }
-
-  // #[napi]
-  // pub fn sign_claims(&self, claims: &Claims) -> String {
-  //   jsonwebtoken::encode(&self.header, claims, &self.encoding_key).unwrap()
-  // }
 
   #[napi]
   pub fn verify(&self, token: String) -> napi::Result<Claims> {
@@ -72,11 +60,4 @@ impl JwtClient {
       }
     }
   }
-
-  // #[napi]
-  // pub fn decode(&self, token: String) -> Claims {
-  //   jsonwebtoken::decode::<Claims>(&token, &self.decoding_key, &self.no_valid)
-  //     .unwrap()
-  //     .claims
-  // }
 }
