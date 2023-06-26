@@ -9,7 +9,7 @@ Benchmarks were performed using [benchmark](https://www.npmjs.com/package/benchm
 Machine Details:
 
 - OS: Ubuntu 22.04
-- CPU: Intel i7
+- Processor: Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz - Threads: 6 * 2
 - Memory: 16G
 
 **DISCLAIMER: Always take benchmarks like this with a grain of salt, as they may not always be indicative of good performance. And performance may not be the top thing to consider when choosing a package for solving your problem (unless the problem is that of performance itself). It would be best to perform these benchmarks on your own machine/deployment environment before making any decision.**
@@ -35,17 +35,4 @@ fast-jwt x 68,474 ops/sec ±0.79% (182 runs sampled)
 @carbonteq/jwt x 166,543 ops/sec ±0.73% (189 runs sampled)
 
 SUITE <Verify Token>: Fastest is @carbonteq/jwt
-```
-
-### Decoding Token without Verification ([bench/decode.mjs](./bench/decode.mjs))
-
-This package performs the worst here, as I am not actually bypassing verification completely, but you'll probably not use this method much, seeing as you would likely be performing decoding with verification
-
-```
-jsonwebtoken x 257,054 ops/sec ±1.27% (190 runs sampled)
-jose x 921,471 ops/sec ±0.64% (188 runs sampled)
-fast-jwt x 519,612 ops/sec ±1.71% (186 runs sampled)
-@carbonteq/jwt x 137,408 ops/sec ±2.11% (184 runs sampled)
-
-SUITE <Decode (No Verification)>: Fastest is jose
 ```
