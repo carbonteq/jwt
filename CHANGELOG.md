@@ -1,5 +1,15 @@
 # @carbonteq/jwt
 
+## 0.3.0
+
+### Minor Changes
+
+- c9295eb: Add asymmetric key based signatures, algorithm selection and other header & validation options
+
+### Patch Changes
+
+- 0b8ab6d: Remove decode and signClaims, and clean up constructor
+
 ## 0.2.0
 
 ### Minor Changes
