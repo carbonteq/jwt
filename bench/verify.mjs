@@ -1,10 +1,11 @@
+import { JwtClient } from '../index.js';
 import bench from 'benchmark';
-import jwt from 'jsonwebtoken';
+import chalk from 'chalk';
 import fastJwt from 'fast-jwt';
 import * as jose from 'jose';
-import { Claims, JwtClient } from '../index.js';
+import jwt from 'jsonwebtoken';
 
-const suite = new bench.Suite();
+const suite = new bench.Suite('Verify Token');
 
 const secret = 'somelongsecretasdbnakwfbjawf';
 const minSamples = 100;
@@ -26,57 +27,49 @@ const joseSigned = await joseSign(payload);
 const jwtSigned = jwt.sign(payload, secret);
 
 const signer = fastJwt.createSigner({ key: secret });
-const fastJwtVerify = fastJwt.createVerifier({ key: secret });
 const fastJwtSigned = signer(payload);
 
-const claims = new Claims(JSON.stringify(payload), expires_in);
-const fasterJwtSigned = client.signClaims(claims);
+const ctJwtSigned = client.sign(payload, expires_in);
 
 suite
-  .add('jsonwebtoken#verify', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+  .add(
+    'jsonwebtoken',
+    () => {
       jwt.verify(jwtSigned, secret);
+    },
+    { minSamples },
+  )
+  .add(
+    'jose',
+    async (deferred) => {
+      await jose.jwtVerify(joseSigned, encodedKey);
       deferred.resolve();
     },
-  })
-  .add('jose#verify', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      jose.jwtVerify(joseSigned, encodedKey).then(() => deferred.resolve());
-    },
-  })
-  .add('fastjwt#verify', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      const verifyIt = fastJwt.createVerifier({ key: secret });
-      verifyIt(fastJwtSigned);
-      deferred.resolve();
-    },
-  })
-  .add('fastjwt#verifyWithCache', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
+    { defer: true, minSamples },
+  )
+  .add(
+    'fast-jwt',
+    () => {
+      const fastJwtVerify = fastJwt.createVerifier({ key: secret });
       fastJwtVerify(fastJwtSigned);
-      deferred.resolve();
     },
-  })
-  .add('@carbonteq/jwt#verify', {
-    defer: true,
-    minSamples,
-    fn: function (deferred) {
-      client.verify(fasterJwtSigned);
-      deferred.resolve();
+    { minSamples },
+  )
+  .add(
+    '@carbonteq/jwt',
+    () => {
+      client.verify(ctJwtSigned);
     },
-  })
-  .on('cycle', (e) => {
+    { minSamples },
+  )
+  .on('cycle', function (e) {
     console.log(String(e.target));
   })
   .on('complete', function () {
-    console.log('\nFastest is ' + this.filter('fastest').map('name'));
+    console.log(
+      `\nSUITE <${this.name}>: Fastest is ${chalk.green(
+        this.filter('fastest').map('name'),
+      )}`,
+    );
   })
-  .run({ async: true });
+  .run();
