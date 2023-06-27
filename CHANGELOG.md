@@ -1,5 +1,11 @@
 # @carbonteq/jwt
 
+## 0.4.0
+
+### Minor Changes
+
+- 6d2ab5a: Add cache opt
+
 ## 0.3.0
 
 ### Minor Changes
