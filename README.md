@@ -29,10 +29,12 @@ SUITE <Sign token>: Fastest is @carbonteq/jwt
 ### Verifying Token ([bench/verify.mjs](./bench/verify.mjs))
 
 ```
-jsonwebtoken x 2,068 ops/sec ±0.46% (187 runs sampled)
-jose x 55,797 ops/sec ±0.29% (182 runs sampled)
-fast-jwt x 68,474 ops/sec ±0.79% (182 runs sampled)
-@carbonteq/jwt x 166,543 ops/sec ±0.73% (189 runs sampled)
+jsonwebtoken x 2,110 ops/sec ±0.95% (186 runs sampled)
+jose x 54,067 ops/sec ±0.35% (182 runs sampled)
+fast-jwt x 108,051 ops/sec ±0.65% (187 runs sampled)
+fast-jwt#withCache x 221,852 ops/sec ±1.00% (185 runs sampled)
+@carbonteq/jwt x 233,830 ops/sec ±3.21% (181 runs sampled)
+@carbonteq/jwt#withCache x 440,433 ops/sec ±9.85% (172 runs sampled)
 
-SUITE <Verify Token>: Fastest is @carbonteq/jwt
+SUITE <Verify Token>: Fastest is @carbonteq/jwt#withCache
 ```

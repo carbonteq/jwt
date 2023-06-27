@@ -195,4 +195,15 @@ export class JwtClient {
   sign(data: Record<string, any>, expiresInSeconds: number, claimOpts?: ClaimOpts | undefined | null): string
   signClaims(claims: Claims): string
   verify(token: string): Claims
+  get header(): Header
+}
+export class JwtCacheClient {
+  constructor(secretKey: string | Buffer, ttlSecs: number, maxCapacity: number, opts?: JwtClientInitOpts | undefined | null)
+  static withPubPrivKeys(pubKey: string | Buffer, privKey: string | Buffer, ttlSecs: number, maxCapacity: number, opts?: JwtClientInitOpts | undefined | null): JwtCacheClient
+  sign(data: Record<string, any>, claimOpts?: ClaimOpts | undefined | null): string
+  verify(token: string): Claims
+  invalidateCache(): void
+  get header(): Header
+  get ttlSecs(): number
+  get maxCapacity(): number
 }

@@ -252,8 +252,9 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { Algorithm, Claims, JwtClient } = nativeBinding
+const { Algorithm, Claims, JwtClient, JwtCacheClient } = nativeBinding
 
 module.exports.Algorithm = Algorithm
 module.exports.Claims = Claims
 module.exports.JwtClient = JwtClient
+module.exports.JwtCacheClient = JwtCacheClient
