@@ -29,6 +29,12 @@ pub enum Algorithm {
   EdDSA,
 }
 
+impl Default for Algorithm {
+  fn default() -> Self {
+    Self::HS256
+  }
+}
+
 impl From<Algorithm> for jsonwebtoken::Algorithm {
   #[inline]
   fn from(value: Algorithm) -> Self {
@@ -49,8 +55,22 @@ impl From<Algorithm> for jsonwebtoken::Algorithm {
   }
 }
 
-impl Default for Algorithm {
-  fn default() -> Self {
-    Self::HS256
+impl From<jsonwebtoken::Algorithm> for Algorithm {
+  #[inline]
+  fn from(value: jsonwebtoken::Algorithm) -> Self {
+    match value {
+      jsonwebtoken::Algorithm::HS256 => Self::HS256,
+      jsonwebtoken::Algorithm::HS384 => Self::HS384,
+      jsonwebtoken::Algorithm::HS512 => Self::HS512,
+      jsonwebtoken::Algorithm::ES256 => Self::ES256,
+      jsonwebtoken::Algorithm::ES384 => Self::ES384,
+      jsonwebtoken::Algorithm::RS256 => Self::RS256,
+      jsonwebtoken::Algorithm::RS384 => Self::RS384,
+      jsonwebtoken::Algorithm::RS512 => Self::RS512,
+      jsonwebtoken::Algorithm::PS256 => Self::PS256,
+      jsonwebtoken::Algorithm::PS384 => Self::PS384,
+      jsonwebtoken::Algorithm::PS512 => Self::PS512,
+      jsonwebtoken::Algorithm::EdDSA => Self::EdDSA,
+    }
   }
 }

@@ -54,48 +54,6 @@ pub struct Validation {
   pub validate_signature: Option<bool>,
 }
 
-// impl From<Validation> for jsonwebtoken::Validation {
-//   #[inline]
-//   fn from(value: Validation) -> Self {
-//     let mut validation = Self::new(jsonwebtoken::Algorithm::HS256);
-//     if let Some(aud) = &value.aud {
-//       validation.set_audience(aud);
-//     }
-//
-//     if let Some(required_spec_claims) = &value.required_spec_claims {
-//       validation.set_required_spec_claims(required_spec_claims);
-//     }
-//
-//     if let Some(leeway) = value.leeway.and_then(|l| l.as_u64()) {
-//       validation.leeway = leeway;
-//     }
-//
-//     if let Some(validate_exp) = value.validate_exp {
-//       validation.validate_exp = validate_exp;
-//     }
-//
-//     if let Some(validate_nbf) = value.validate_nbf {
-//       validation.validate_nbf = validate_nbf;
-//     }
-//
-//     validation.sub = value.sub;
-//
-//     if let Some(algorithms) = &value.algorithms {
-//       validation.algorithms = algorithms.iter().map(|alg| alg.to_owned().into()).collect();
-//     }
-//
-//     if let Some(iss) = &value.iss {
-//       validation.set_issuer(iss);
-//     }
-//
-//     if let Some(false) = value.validate_signature {
-//       validation.insecure_disable_signature_validation()
-//     }
-//
-//     validation
-//   }
-// }
-
 impl Validation {
   pub fn for_jsonwebtoken(self, alg: jsonwebtoken::Algorithm) -> jsonwebtoken::Validation {
     let mut validation = jsonwebtoken::Validation::new(alg);

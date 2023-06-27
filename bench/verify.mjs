@@ -1,4 +1,4 @@
-import { JwtClient } from '../index.js';
+import { JwtClient, JwtCacheClient } from '../index.js';
 import bench from 'benchmark';
 import chalk from 'chalk';
 import fastJwt from 'fast-jwt';
@@ -13,8 +13,9 @@ const minSamples = 100;
 const encodedKey = new TextEncoder().encode(secret);
 const payload = { userId: 'abc123' };
 
-const client = new JwtClient(secret);
 const expires_in = 60000;
+const client = new JwtClient(secret);
+const cacheClient = new JwtCacheClient(secret, expires_in, 2);
 
 const joseSign = async (payload) => {
   const s = new jose.SignJWT(payload);
@@ -27,6 +28,12 @@ const joseSigned = await joseSign(payload);
 const jwtSigned = jwt.sign(payload, secret);
 
 const signer = fastJwt.createSigner({ key: secret });
+const fastJwtVerify = fastJwt.createVerifier({ key: secret, cache: false });
+const fastJwtCacheVerify = fastJwt.createVerifier({
+  key: secret,
+  cache: true,
+  cacheTTL: expires_in,
+});
 const fastJwtSigned = signer(payload);
 
 const ctJwtSigned = client.sign(payload, expires_in);
@@ -50,8 +57,14 @@ suite
   .add(
     'fast-jwt',
     () => {
-      const fastJwtVerify = fastJwt.createVerifier({ key: secret });
       fastJwtVerify(fastJwtSigned);
+    },
+    { minSamples },
+  )
+  .add(
+    'fast-jwt#withCache',
+    () => {
+      fastJwtCacheVerify(fastJwtSigned);
     },
     { minSamples },
   )
@@ -59,6 +72,13 @@ suite
     '@carbonteq/jwt',
     () => {
       client.verify(ctJwtSigned);
+    },
+    { minSamples },
+  )
+  .add(
+    '@carbonteq/jwt#withCache',
+    () => {
+      cacheClient.verify(ctJwtSigned);
     },
     { minSamples },
   )

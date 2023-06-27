@@ -73,18 +73,17 @@ impl From<Header> for jsonwebtoken::Header {
   }
 }
 
-// impl Default for Header {
-//   #[inline]
-//   fn default() -> Self {
-//     Self {
-//       algorithm: Some(Algorithm::HS256),
-//       content_type: None,
-//       json_key_url: None,
-//       key_id: None,
-//       x5_url: None,
-//       x5_cert_chain: None,
-//       x5_cert_thumbprint: None,
-//       x5t_s256_cert_thumbprint: None,
-//     }
-//   }
-// }
+impl From<&jsonwebtoken::Header> for Header {
+  fn from(value: &jsonwebtoken::Header) -> Self {
+    Self {
+      x5t_s256_cert_thumbprint: value.x5t_s256.clone(),
+      x5_cert_thumbprint: value.x5t.clone(),
+      x5_cert_chain: value.x5c.clone(),
+      x5_url: value.x5u.clone(),
+      algorithm: Some(value.alg.into()),
+      content_type: value.cty.clone(),
+      key_id: value.kid.clone(),
+      json_key_url: value.jku.clone(),
+    }
+  }
+}

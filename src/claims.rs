@@ -26,7 +26,7 @@ pub struct ClaimOpts {
 }
 
 #[napi]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Claims {
   pub data: Map<String, Value>,
   /// Time after which the JWT expires (as UTC timestamp, seconds from epoch time)
