@@ -1,7 +1,7 @@
 {
   "name": "@carbonteq/jwt",
   "description": "JWT lib with native bindings and (optional) LRU cache",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "index.js",
   "types": "index.d.ts",
   "scope": "@carbonteq",
