@@ -1,4 +1,4 @@
-name: CI
+name: Release
 env:
   DEBUG: napi:*
   APP_NAME: jwt
@@ -115,9 +115,8 @@ jobs:
         with:
           node-version: 18
           check-latest: true
-          cache: yarn
       - name: Install dependencies
-        run: yarn install
+        run: corepack enable && yarn install
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
