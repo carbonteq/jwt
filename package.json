@@ -1,6 +1,6 @@
 {
 	"name": "@carbonteq/jwt",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"main": "index.js",
 	"types": "index.d.ts",
 	"scope": "@carbonteq",
@@ -9,7 +9,14 @@
 		"url": "https://github.com/volf52",
 		"email": "arsalan.karamat@carbonteq.com"
 	},
-	"keywords": ["jwt", "jsonwebtoken", "napi", "napi-rs", "carbonteq", "N-API"],
+	"keywords": [
+		"jwt",
+		"jsonwebtoken",
+		"napi",
+		"napi-rs",
+		"carbonteq",
+		"N-API"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/carbonteq/jwt"
@@ -33,7 +40,10 @@
 	"napi": {
 		"name": "jwt",
 		"triples": {
-			"additional": ["aarch64-apple-darwin", "x86_64-unknown-linux-musl"]
+			"additional": [
+				"aarch64-apple-darwin",
+				"x86_64-unknown-linux-musl"
+			]
 		}
 	},
 	"license": "MIT",
@@ -58,8 +68,15 @@
 	"ava": {
 		"timeout": "3m",
 		"failFast": false,
-		"require": ["esbuild-runner/register.js"],
-		"extensions": ["cjs", "mjs", "js", "ts"]
+		"require": [
+			"esbuild-runner/register.js"
+		],
+		"extensions": [
+			"cjs",
+			"mjs",
+			"js",
+			"ts"
+		]
 	},
 	"engines": {
 		"node": ">= 16"

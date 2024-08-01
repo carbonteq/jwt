@@ -1,5 +1,15 @@
 # @carbonteq/jwt
 
+## 0.5.0
+
+### Minor Changes
+
+- 7f920ca: Heavy rewrite
+
+### Patch Changes
+
+- eb0393a: Add linux musl support
+
 ## 0.4.0
 
 ### Minor Changes
