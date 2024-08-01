@@ -5,41 +5,41 @@
 
 export const enum Algorithm {
   /** HMAC using SHA-256 */
-  HS256 = 0,
+  HS256 = 'HS256',
   /** HMAC using SHA-384 */
-  HS384 = 1,
+  HS384 = 'HS384',
   /** HMAC using SHA-512 */
-  HS512 = 2,
+  HS512 = 'HS512',
   /** ECDSA using SHA-256 */
-  ES256 = 3,
+  ES256 = 'ES256',
   /** ECDSA using SHA-384 */
-  ES384 = 4,
+  ES384 = 'ES384',
   /** RSASSA-PKCS1-v1_5 using SHA-256 */
-  RS256 = 5,
+  RS256 = 'RS256',
   /** RSASSA-PKCS1-v1_5 using SHA-384 */
-  RS384 = 6,
+  RS384 = 'RS384',
   /** RSASSA-PKCS1-v1_5 using SHA-512 */
-  RS512 = 7,
+  RS512 = 'RS512',
   /** RSASSA-PSS using SHA-256 */
-  PS256 = 8,
+  PS256 = 'PS256',
   /** RSASSA-PSS using SHA-384 */
-  PS384 = 9,
+  PS384 = 'PS384',
   /** RSASSA-PSS using SHA-512 */
-  PS512 = 10,
+  PS512 = 'PS512',
   /** Edwards-curve Digital Signature Algorithm (EdDSA) */
-  EdDSA = 11
+  EdDSA = 'EdDSA'
 }
 export interface ClaimOpts {
   /** Recipient for which the JWT is intended */
   aud?: string
   /** Time at which the JWT was issued (as UTC timestamp, seconds from epoch time) */
-  iat?: Number
+  iat?: number
   /** Issuer of JWT */
   iss?: string
   /** [JWT id] Unique identifier */
   jti?: string
   /** [not-before-time] Time before which the JWT must not be accepted for processing (as UTC timestamp, seconds from epoch time) */
-  nbf?: Number
+  nbf?: number
   /** Subject of JWT (the user) */
   sub?: string
 }
@@ -126,7 +126,7 @@ export interface Validation {
    *
    * Defaults to `60`.
    */
-  leeway?: Number
+  leeway?: number
   /**
    * Whether to validate the `exp` field.
    *
@@ -169,25 +169,25 @@ export interface Validation {
    */
   validateSignature?: boolean
 }
-export class Claims {
+export declare class Claims {
   data: Record<string, any>
   /** Time after which the JWT expires (as UTC timestamp, seconds from epoch time) */
-  exp: Number
+  exp: number
   /** Recipient for which the JWT is intended */
   aud?: string
   /** Time at which the JWT was issued (as UTC timestamp, seconds from epoch time) */
-  iat?: Number
+  iat?: number
   /** Issuer of JWT */
   iss?: string
   /** [JWT id] Unique identifier */
   jti?: string
   /** [not-before-time] Time before which the JWT must not be accepted for processing (as UTC timestamp, seconds from epoch time) */
-  nbf?: Number
+  nbf?: number
   /** Subject of JWT (the user) */
   sub?: string
   constructor(data: Record<string, any>, expiresInSeconds: number, opts?: ClaimOpts | undefined | null)
 }
-export class JwtClient {
+export declare class JwtClient {
   /** For symetric key based signatures */
   constructor(secretKey: string | Buffer, opts?: JwtClientInitOpts | undefined | null)
   /** For assymetric key based signatures */
@@ -197,7 +197,7 @@ export class JwtClient {
   verify(token: string): Claims
   get header(): Header
 }
-export class JwtCacheClient {
+export declare class JwtCacheClient {
   constructor(secretKey: string | Buffer, ttlSecs: number, maxCapacity: number, opts?: JwtClientInitOpts | undefined | null)
   static withPubPrivKeys(pubKey: string | Buffer, privKey: string | Buffer, ttlSecs: number, maxCapacity: number, opts?: JwtClientInitOpts | undefined | null): JwtCacheClient
   sign(data: Record<string, any>, claimOpts?: ClaimOpts | undefined | null): string

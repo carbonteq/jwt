@@ -1,14 +1,14 @@
 {
-	"name": "@carbonteq/jwt-win32-x64-msvc",
+	"name": "@carbonteq/jwt-darwin-arm64",
 	"version": "0.4.0",
-	"os": ["win32"],
-	"cpu": ["x64"],
-	"main": "jwt.win32-x64-msvc.node",
+	"os": ["darwin"],
+	"cpu": ["arm64"],
+	"main": "jwt.darwin-arm64.node",
 	"publishConfig": {
 		"access": "public",
 		"registry": "https://registry.npmjs.org/"
 	},
-	"files": ["jwt.win32-x64-msvc.node"],
+	"files": ["jwt.darwin-arm64.node"],
 	"license": "MIT",
 	"engines": {
 		"node": ">= 16"

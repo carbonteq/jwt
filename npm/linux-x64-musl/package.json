@@ -1,17 +1,18 @@
 {
-	"name": "@carbonteq/jwt-win32-x64-msvc",
+	"name": "@carbonteq/jwt-linux-x64-musl",
 	"version": "0.4.0",
-	"os": ["win32"],
+	"os": ["linux"],
 	"cpu": ["x64"],
-	"main": "jwt.win32-x64-msvc.node",
+	"main": "jwt.linux-x64-musl.node",
 	"publishConfig": {
 		"access": "public",
 		"registry": "https://registry.npmjs.org/"
 	},
-	"files": ["jwt.win32-x64-msvc.node"],
+	"files": ["jwt.linux-x64-musl.node"],
 	"license": "MIT",
 	"engines": {
 		"node": ">= 16"
-	}
+	},
+	"libc": ["musl"]
 }
 
