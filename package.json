@@ -71,7 +71,7 @@
 		"prepublishOnly": "napi prepublish -t npm",
 		"test": "ava",
 		"universal": "napi universal",
-		"version": "changeset version && napi version",
+		"bump": "changeset version && napi version",
 		"release": "changeset publish --no-git-tag"
 	},
 	"packageManager": "yarn@4.3.1"

@@ -131,7 +131,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: yarn release
-          version: yarn version
+          version: yarn bump
           title: Release
           commit: new release
           createGithubReleases: true
