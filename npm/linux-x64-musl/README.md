@@ -1,3 +1,3 @@
-# `@carbonteq/jwt-linux-x64-gnu`
+# `ct-jwt-linux-x64-musl`
 
-This is the **x86_64-unknown-linux-gnu** binary for `@carbonteq/jwt`
+This is the **x86_64-unknown-linux-musl** binary for `ct-jwt`

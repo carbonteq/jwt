@@ -1,25 +1,18 @@
 {
-  "name": "@carbonteq/jwt-linux-x64-musl",
-  "version": "0.3.0",
-  "os": [
-    "linux"
-  ],
-  "cpu": [
-    "x64"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "main": "jwt.linux-x64-musl.node",
-  "files": [
-    "jwt.linux-x64-gnu.node"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">= 16"
-  },
-  "libc": [
-    "glibc"
-  ]
+	"name": "@carbonteq/jwt-linux-x64-musl",
+	"version": "0.4.0",
+	"os": ["linux"],
+	"cpu": ["x64"],
+	"main": "jwt.linux-x64-musl.node",
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"files": ["jwt.linux-x64-musl.node"],
+	"license": "MIT",
+	"engines": {
+		"node": ">= 16"
+	},
+	"libc": ["musl"]
 }
+

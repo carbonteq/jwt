@@ -1,3 +1,5 @@
+use napi::JsError;
+
 pub enum Error {
   InvalidKey(String),
   TokenValidationFailed(String),
@@ -11,6 +13,14 @@ impl From<Error> for napi::Error {
       Error::TokenValidationFailed(e) => Self::new(napi::Status::GenericFailure, e),
       Error::Generic(msg) => Self::new(napi::Status::Unknown, msg),
     }
+  }
+}
+
+impl From<Error> for JsError {
+  fn from(value: Error) -> Self {
+    let err: napi::Error = value.into();
+
+    err.into()
   }
 }
 

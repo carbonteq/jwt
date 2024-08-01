@@ -1,8 +1,11 @@
-name: Test CI
+name: CI
 env:
   DEBUG: napi:*
-  APP_NAME: jwt
+  APP_NAME: ct-jwt
   MACOSX_DEPLOYMENT_TARGET: "10.13"
+permissions:
+  contents: write
+  id-token: write
 "on":
   push:
     branches:
@@ -24,11 +27,9 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: |
-              yarn build
-              strip -x *.node
+            build: yarn build --target x86_64-apple-darwin
           - host: windows-latest
-            build: yarn build
+            build: yarn build --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -40,19 +41,16 @@ jobs:
             build: yarn build --target x86_64-unknown-linux-musl
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: |
-              yarn build --target aarch64-apple-darwin
-              strip -x *.node
-    name: stable - ${{ matrix.settings.target }} - node@18
+            build: yarn build --target aarch64-apple-darwin
+    name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: ${{ !matrix.settings.docker }}
         with:
-          node-version: 18
-          check-latest: true
+          node-version: 20
           cache: yarn
       - name: Install
         uses: dtolnay/rust-toolchain@stable
@@ -61,7 +59,7 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.settings.target }}
       - name: Cache cargo
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry/index/
@@ -71,9 +69,9 @@ jobs:
             target/
           key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
       - uses: goto-bus-stop/setup-zig@v2
-        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
+        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
         with:
-          version: 0.10.1
+          version: 0.11.0
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
@@ -85,11 +83,10 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Setup node x86
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: matrix.settings.target == 'i686-pc-windows-msvc'
         with:
-          node-version: 18
-          check-latest: true
+          node-version: 20
           cache: yarn
           architecture: x86
       - name: Build in docker
@@ -104,7 +101,7 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
           path: ${{ env.APP_NAME }}.*.node
@@ -117,24 +114,26 @@ jobs:
       fail-fast: false
       matrix:
         settings:
+          - host: macos-latest
+            target: x86_64-apple-darwin
           - host: windows-latest
             target: x86_64-pc-windows-msvc
         node:
-          - "16"
           - "18"
+          - "20"
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
           cache: yarn
+          architecture: x64
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
           path: .
@@ -151,21 +150,20 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - "16"
           - "18"
+          - "20"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
           cache: yarn
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bindings-x86_64-unknown-linux-gnu
           path: .
@@ -174,58 +172,56 @@ jobs:
         shell: bash
       - name: Test bindings
         run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-slim yarn test
-  # universal-macOS:
-  #   name: Build universal macOS binary
-  #   needs:
-  #     - build
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Setup node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #         check-latest: true
-  #         cache: yarn
-  #     - name: Install dependencies
-  #       run: yarn install
-  #     - name: Download macOS x64 artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: bindings-x86_64-apple-darwin
-  #         path: artifacts
-  #     - name: Download macOS arm64 artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: bindings-aarch64-apple-darwin
-  #         path: artifacts
-  #     - name: Combine binaries
-  #       run: yarn universal
-  #     - name: Upload artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: bindings-universal-apple-darwin
-  #         path: ${{ env.APP_NAME }}.*.node
-  #         if-no-files-found: error
+  test-linux-x64-musl-binding:
+    name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - "18"
+          - "20"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.libc "musl"
+          yarn install
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bindings-x86_64-unknown-linux-musl
+          path: .
+      - name: List packages
+        run: ls -R .
+        shell: bash
+      - name: Test bindings
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine yarn test
   # publish:
   #   name: Publish
   #   runs-on: ubuntu-latest
   #   needs:
   #     - test-macOS-windows-binding
   #     - test-linux-x64-gnu-binding
-  #     - universal-macOS
+  #     - test-linux-x64-musl-binding
   #   steps:
-  #     - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v4
   #     - name: Setup node
-  #       uses: actions/setup-node@v3
+  #       uses: actions/setup-node@v4
   #       with:
-  #         node-version: 18
-  #         check-latest: true
+  #         node-version: 20
   #         cache: yarn
   #     - name: Install dependencies
   #       run: yarn install
   #     - name: Download all artifacts
-  #       uses: actions/download-artifact@v3
+  #       uses: actions/download-artifact@v4
   #       with:
   #         path: artifacts
   #     - name: Move artifacts
@@ -235,6 +231,7 @@ jobs:
   #       shell: bash
   #     - name: Publish
   #       run: |
+  #         npm config set provenance true
   #         if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
   #         then
   #           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
