@@ -1,5 +1,11 @@
 # @carbonteq/jwt
 
+## 0.5.1
+
+### Patch Changes
+
+- 102b571: Fix binary module publishing
+
 ## 0.5.0
 
 ### Minor Changes
