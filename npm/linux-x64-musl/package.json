@@ -1,25 +1,32 @@
 {
-  "name": "@carbonteq/jwt-linux-x64-musl",
-  "version": "0.5.0",
-  "os": [
-    "linux"
-  ],
-  "cpu": [
-    "x64"
-  ],
-  "main": "jwt.linux-x64-musl.node",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "files": [
-    "jwt.linux-x64-musl.node"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">= 16"
-  },
-  "libc": [
-    "musl"
-  ]
+	"name": "@carbonteq/jwt-linux-x64-musl",
+	"version": "0.5.0",
+	"os": ["linux"],
+	"cpu": ["x64"],
+	"main": "jwt.linux-x64-musl.node",
+	"files": ["jwt.linux-x64-musl.node"],
+	"keywords": ["jwt", "jsonwebtoken", "napi", "napi-rs", "carbonteq", "N-API"],
+	"author": {
+		"name": "Muhammad Arslan",
+		"url": "https://github.com/volf52",
+		"email": "arsalan.karamat@carbonteq.com"
+	},
+	"homepage": "https://github.com/carbonteq/jwt#readme",
+	"license": "MIT",
+	"engines": {
+		"node": ">= 16"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/carbonteq/jwt"
+	},
+	"bugs": {
+		"url": "https://github.com/carbonteq/jwt/issues"
+	},
+	"libc": ["musl"]
 }
+
