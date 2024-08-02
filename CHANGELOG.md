@@ -1,5 +1,11 @@
 # @carbonteq/jwt
 
+## 0.5.2
+
+### Patch Changes
+
+- 3f150ba: Update workflows to allow bindings
+
 ## 0.5.1
 
 ### Patch Changes
