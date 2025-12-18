@@ -31,11 +31,15 @@
 		"registry": "https://registry.npmjs.org/"
 	},
 	"exports": {
-		"node": {
-			"require": "./index.js",
-			"import": "./index.js",
-			"types": "./index.d.ts"
-		}
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.js",
+      "node": {
+        "import": "./index.js",
+        "require": "./index.js"
+      }
+    }
 	},
 	"napi": {
 		"name": "jwt",
